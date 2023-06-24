@@ -1,90 +1,105 @@
-// let num1 = prompt("Enter First Number : ");
-// let operator = prompt("Enter one Operator (+,-,x,/) : ");
-// let num2 = prompt("Enter Second Number : ");
 
-function addition(n1, n2) {
-    let sum = Number(n1) + Number(n2)
-    return sum;
+let numTemp = [];
+let num1 = '';
+let operator = '';
+let num2 = '';
+
+function addition(num1, num2) {
+  let sum = Number(num1) + Number(num2);
+  return sum;
 }
 
-function subtract(n1, n2) {
-    let sub = n1 - n2
-    return sub;
+function subtract(num1, num2) {
+  let sub = num1 - num2;
+  return sub;
 }
 
-function multiply(n1, n2) {
-    let mul = n1 * n2
-    return mul;
+function multiply(num1, num2) {
+  let mul = num1 * num2;
+  return mul;
 }
 
-function divide(n1, n2) {
-    let div = n1 / n2
-    return div;
+function divide(num1, num2) {
+  let div = num1 / num2;
+  return div;
 }
 
-function operate(n1, operator, n2) {
+function operate(num1, operator, num2) {
     if (operator === '+') {
-        return addition(n1, n2)
+      return addition(num1, num2);
     } else if (operator === '-') {
-        return subtract(n1, n2)
+      return subtract(num1, num2);
     } else if (operator === 'x') {
-        return multiply(n1, n2)
-    } else if (operator === "/") {
-        return divide(n1, n2)
+      return multiply(num1, num2);
+    } else if (operator === '/') {
+      return divide(num1, num2);
     }
-}
+  }
+
 
 textArea = document.getElementById("text-box");
 
-// document.getElementById("one").addEventListener("click", () => {
-//     document.getElementById("text-box").setAttribute('value', '1');
-//     textArea.value = textArea.value + "1";
-// });
+function updateDisplay(value) {
+    textArea.value += value;
+  }
 
-const btnOne = document.getElementById("one").addEventListener("click", () => {
-    textArea.value = textArea.value + '1';
-});
-
-const btnTwo = document.getElementById("two").addEventListener("click", () => {
-    textArea.value = textArea.value + '2';
-});
-
-const btnThree = document.getElementById("three").addEventListener("click", () => {
-    textArea.value = textArea.value + '3';
-});
-
-const btnFour = document.getElementById("four").addEventListener("click", () => {
-    textArea.value = textArea.value + '4';
-});
-
-const btnFive = document.getElementById("five").addEventListener("click", () => {
-    textArea.value = textArea.value + '5';
-});
-
-const btnSix = document.getElementById("six").addEventListener("click", () => {
-    textArea.value = textArea.value + '6';
-});
-
-const btnSeven = document.getElementById("seven").addEventListener("click", () => {
-    textArea.value = textArea.value + '7';
-});
-
-const btnEight = document.getElementById("eight").addEventListener("click", () => {
-    textArea.value = textArea.value + '8';
-});
-
-const btnNine = document.getElementById("nine").addEventListener("click", () => {
-    textArea.value = textArea.value + '9';
-});
-
-const btnZero = document.getElementById("zero").addEventListener("click", () => {
-    textArea.value = textArea.value + '0';
-});
-
-const btnClear = document.getElementById("clear").addEventListener("click", () => {
+  function clearCalculator() {
     textArea.value = '';
+    numTemp = [];
+    num1 = '';
+    operator = '';
+    num2 = '';
+  }
+  
+  function performCalculation() {
+    num2 = textArea.value;
+    const result = operate(num1, operator, num2);
+    textArea.value = result;
+    num1 = result;
+    operator = '';
+    num2 = '';
+  }
+  
+  function handleNumberClick(number) {
+    updateDisplay(number);
+    numTemp.push(number);
+    num1 = Math.max(...numTemp);
+  }
+  
+  function handleOperatorClick(operatorSymbol) {
+    updateDisplay(operatorSymbol);
+    operator = operatorSymbol;
+    num2 = Number(textArea.value);
+    textArea.value = '';
+  }
+
+  const numberButtons = document.querySelectorAll('.number');
+numberButtons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    const number = event.target.textContent;
+    handleNumberClick(number);
+  });
 });
 
+const operatorButtons = document.querySelectorAll('.operator');
+operatorButtons.forEach((button) => {
+  button.addEventListener('click', (event) => {
+    const operatorSymbol = event.target.textContent;
+    handleOperatorClick(operatorSymbol);
+  });
+});
 
-console.log(operate(num1, operator, num2));
+const btnClear = document.getElementById('clear').addEventListener('click', () => {
+  clearCalculator();
+});
 
+const btnDelete = document.getElementById('delete').addEventListener('click', () => {
+  textArea.value = textArea.value.slice(0, -1);
+  numTemp.pop();
+});
+
+const btnEquals = document.getElementById('equals').addEventListener('click', () => {
+  performCalculation();
+});
+
+// console.log(operate(num1, operator, num2));
